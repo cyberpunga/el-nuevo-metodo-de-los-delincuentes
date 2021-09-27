@@ -1,0 +1,9 @@
+{
+  "name": "el-nuevo-metodo-de-los-delincuentes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "serp": "^2.2.1"
+  }
+}
