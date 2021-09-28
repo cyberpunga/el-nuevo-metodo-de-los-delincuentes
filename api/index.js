@@ -1,4 +1,4 @@
-const serp = require("serp");
+const serp = require("../serp");
 
 async function googleCL(q) {
   try {
