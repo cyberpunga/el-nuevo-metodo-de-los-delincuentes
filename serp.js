@@ -152,8 +152,7 @@ async function newPage(options) {
     contextOptions.proxy = pickNewProxy(options);
   }
 
-  const context = await options.browser.newContext(contextOptions);
-  const page = await context.newPage();
+  const page = await options.browser.newPage();
 
   return page;
 }
