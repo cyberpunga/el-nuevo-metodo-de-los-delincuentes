@@ -1,5 +1,6 @@
 const util = require("util");
-const chromium = require("chrome-aws-lambda");
+const chrome = require("chrome-aws-lambda");
+const puppeteer = require("puppeteer-core");
 const cheerio = require("cheerio");
 
 const delay = util.promisify(setTimeout);
@@ -68,13 +69,18 @@ async function buildOptions(params) {
     options.qs.hl = "EN";
   }
 
-  options.browser = await chromium.puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: process.env.NODE_ENV !== "development" ? await chromium.executablePath : "/usr/bin/chromium",
-    headless: process.env.NODE_ENV !== "development" ? chromium.headless : true,
-    ignoreHTTPSErrors: true,
-  });
+  options.browser = await puppeteer.launch(
+    process.env.NODE_ENV !== "development"
+      ? {
+          args: chrome.args,
+          executablePath: await chrome.executablePath,
+          headless: chrome.headless,
+        }
+      : {
+          args: [],
+          executablePath: "/usr/bin/google-chrome-stable",
+        }
+  );
 
   return options;
 }
@@ -132,11 +138,11 @@ async function requestFromBrowser(url, options) {
   }
 
   // If the cookie consent button exist on the page, click on it
-  const consentButton = await page.$("//div[text()='I agree']");
+  // const consentButton = await page.$("//div[text()='I agree']");
 
-  if (consentButton) {
-    await consentButton.click();
-  }
+  // if (consentButton) {
+  //   await consentButton.click();
+  // }
 
   return await page.content();
 }
