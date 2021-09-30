@@ -8,7 +8,7 @@ async function googleCL(q) {
         q,
         cr: "countryCL",
       },
-      num: 50,
+      // num: 50,
     });
     return results;
   } catch (err) {
