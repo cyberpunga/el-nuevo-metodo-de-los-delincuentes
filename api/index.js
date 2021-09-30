@@ -8,7 +8,7 @@ async function googleCL(q) {
         q,
         cr: "countryCL",
       },
-      num: 100,
+      num: 50,
     });
     return results;
   } catch (err) {
@@ -18,15 +18,16 @@ async function googleCL(q) {
 
 module.exports = async (_, res) => {
   const results = await googleCL("el nuevo método de los delincuentes");
-  // const verses = results
-  //   .map(({ title }) =>
-  //     title
-  //       .toLowerCase()
-  //       .replace(/\ \-.*/, "")
-  //       .replace(/\ \|.*/, "")
-  //       .replace(/\ \..*/, "")
-  //   )
-  //   .filter((x) => x.includes("nuevo"))
-  //   .filter((x) => x.includes("método"));
-  res.send(results.map((x) => JSON.stringify(x)));
+  const verses = results
+    .map(({ title }) =>
+      title
+        .toLowerCase()
+        .replace(/\ \-.*/, "")
+        .replace(/\ \|.*/, "")
+        .replace(/\ \..*/, "")
+    )
+    .filter((x) => x.includes("nuevo"))
+    .filter((x) => x.includes("método"));
+  // res.send(results.map((x) => JSON.stringify(x)));
+  res.send(verses);
 };
