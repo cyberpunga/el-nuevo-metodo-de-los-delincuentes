@@ -1,10 +1,12 @@
-const versosDeGoogle = require("../src");
+const versosDeGoogle = require("./src");
 
-module.exports = async (_, res) => {
+async function runLocally() {
   const results = await versosDeGoogle({
     q: "el nuevo método de los delincuentes",
     cr: "countryCL",
     num: 100,
   });
-  res.send(results);
-};
+  console.log(results);
+}
+
+runLocally();
