@@ -1,33 +1,32 @@
-const serp = require("../serp");
+const { JSDOM } = require("jsdom");
 
-async function googleCL(q) {
-  try {
-    const results = await serp.search({
-      host: "google.cl",
-      qs: {
-        q,
-        cr: "countryCL",
-      },
-      // num: 50,
-    });
-    return results;
-  } catch (err) {
-    throw err;
-  }
+const url =
+  "https://www.google.com/search?q=el+nuevo+método+de+los+delincuentes&cr=countryCL";
+
+async function googlea(url) {
+  const { window } = await JSDOM.fromURL(url);
+  const results = [...window.document.querySelectorAll("#main h3")];
+  const arr = results.map((x) => x.textContent);
+  return arr;
+}
+
+async function usingPromiseAll(times) {
+  const arr = Array.from({ length: times }, (_, i) => i * 10);
+  const results = (
+    await Promise.all(arr.map((page) => googlea(url + `&start=${page}`)))
+  ).flat();
+  console.log(results, results.length);
+  return results;
 }
 
 module.exports = async (_, res) => {
-  const results = await googleCL("el nuevo método de los delincuentes");
-  const verses = results
-    .map(({ title }) =>
-      title
-        .toLowerCase()
-        .replace(/\ \-.*/, "")
-        .replace(/\ \|.*/, "")
-        .replace(/\ \..*/, "")
-    )
-    .filter((x) => x.includes("nuevo"))
-    .filter((x) => x.includes("método"));
-  // res.send(results.map((x) => JSON.stringify(x)));
+  const results = await usingPromiseAll(10);
+  const verses = results.map((a) =>
+    a
+      .toLowerCase()
+      .replace(/\ \-.*/, "")
+      .replace(/\ \|.*/, "")
+      .replace(/\ \..*/, "")
+  );
   res.send(verses);
 };
