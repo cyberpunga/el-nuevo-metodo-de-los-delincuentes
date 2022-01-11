@@ -12,7 +12,7 @@ export default function Index() {
   const fetchData = async () => {
     const response = await fetch("/api");
     const json = await response.json();
-    setState(json);
+    setState(json.map(({title})=>title));
   };
   React.useEffect(() => fetchData(), []);
   return (

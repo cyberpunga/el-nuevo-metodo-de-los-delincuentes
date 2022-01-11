@@ -3,15 +3,12 @@ const { JSDOM } = require("jsdom");
 
 async function versosDeGoogle(params) {
   const { window } = await JSDOM.fromURL(`https://www.google.com/search?${stringify(params)}`);
-  const results = [...window.document.querySelectorAll("#main h3")];
-  const textContents = results.map((x) => x.textContent);
-  return textContents.map((a) =>
-    a
-      .toLowerCase()
-      .replace(/\ \-.*/, "")
-      .replace(/\ \|.*/, "")
-      .replace(/\ \..*/, "")
-  );
+  const results = [...window.document.querySelectorAll("#rso h3")].map((result) => ({
+    title: result.textContent,
+    description: result.closest("div").nextElementSibling?.textContent,
+   href: result.closest("a")?.href
+  }))
+  return results
 }
 
 module.exports = versosDeGoogle;
