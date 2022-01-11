@@ -6,9 +6,9 @@ async function versosDeGoogle(params) {
   const results = [...window.document.querySelectorAll("#rso h3")].map((result) => ({
     title: result.textContent,
     description: result.closest("div").nextElementSibling?.textContent,
-   href: result.closest("a")?.href
-  }))
-  return results
+    href: result.closest("a")?.href,
+  }));
+  return results;
 }
 
 module.exports = versosDeGoogle;
