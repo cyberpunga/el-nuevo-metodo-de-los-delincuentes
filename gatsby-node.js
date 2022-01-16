@@ -1,5 +1,6 @@
 const { getResults, downloadAudio } = require("./src/utils");
 const slugify = require("slugify");
+const fs = require("fs");
 
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
@@ -10,9 +11,12 @@ exports.createPages = async ({ actions }) => {
   });
   await Promise.all(
     results.map(async (item) => {
-      const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
-      await downloadAudio(url, `./public/${slugify(item.title, { lower: true })}.mp3`);
-      console.log(`✅ ${item.title}`);
+      const savePath = `./public/${slugify(item.title, { lower: true })}.mp3`;
+      if (!fs.existsSync(savePath)) {
+        const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
+        await downloadAudio(url, savePath);
+        console.log(`✅ ${item.title} saved successfully`);
+      }
     })
   );
   createPage({
