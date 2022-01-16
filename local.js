@@ -6,7 +6,7 @@ async function runLocally() {
     cr: "countryCL",
     num: 100,
   });
-  console.log(results);
+  console.log(JSON.stringify(results, null, 2));
 }
 
 runLocally();
