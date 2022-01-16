@@ -1,5 +1,4 @@
 import React from "react";
-
 import "../styles.css";
 
 export default function Index() {
@@ -15,9 +14,12 @@ export default function Index() {
       {state ? (
         <p>
           {state.map((item, index) => (
-            <a key={index} target="_blank" rel="noopener noreferrer" href={item.href}>
-              {item.title}.{" "}
-            </a>
+            <React.Fragment>
+              <a key={index} target="_blank" rel="noopener noreferrer" href={item.href}>
+                {item.title}.{" "}
+              </a>
+              <audio src={`https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`} autoPlay loop />
+            </React.Fragment>
           ))}
         </p>
       ) : (
