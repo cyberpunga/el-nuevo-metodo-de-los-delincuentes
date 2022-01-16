@@ -30,6 +30,7 @@ button {
   color: #fff;
   background: #000;
   border: 2px solid #000;
+  border-left: none;
   font-family: monospace;
   font-size: 4vw;
 }
