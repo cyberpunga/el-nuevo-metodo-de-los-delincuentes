@@ -1,33 +1,47 @@
-import React, { useRef } from "react";
+import React from "react";
+import { Howl } from "howler";
 import slugify from "slugify";
+import Chance from "chance";
 
 import "../styles.css";
 
-function Sentence({ item, delay }) {
-  const audio = useRef();
-  const [playing, setPlaying] = React.useState(false);
-  const playAudio = () => {
-    setTimeout(() => {
-      setPlaying(true);
-      audio.current.play();
-      audio.current.playbackRate = Math.random() * 1.5 + 0.5;
-      audio.current.volume = Math.random() * 0.5 + 0.5;
-    }, delay);
+const chance = new Chance();
+
+function Voice({ item, delay, setPlaying }) {
+  const playVoice = () => {
+    const audio = new Howl({
+      src: [`${slugify(item.title, { lower: true, strict: true })}.mp3`],
+      volume: chance.floating({ min: 0.5, max: 1, fixed: 2 }),
+      rate: chance.floating({ min: 0.7, max: 1.5, fixed: 2 }),
+      onplay: () => setPlaying(true),
+      onend: () => setPlaying(false),
+    });
+    setTimeout(() => audio.play(), delay);
   };
-  React.useEffect(() => playAudio());
+  React.useEffect(() => playVoice());
+  return null;
+}
+
+function Text({ item }) {
+  const [playing, setPlaying] = React.useState(false);
   return (
-    <React.Fragment>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={item.href}
-        style={{ fontWeight: playing ? "bold" : "inherit", background: playing ? "#333" : "#fff", color: playing ? "#fff" : "#333" }}
-      >
-        {item.title}.{" "}
-      </a>
-      <audio src={`/${slugify(item.title, { lower: true })}.mp3`} ref={audio} />
-    </React.Fragment>
+    <a target="_blank" rel="noopener noreferrer" href={item.href} style={{ fontWeight: playing ? "bold" : "inherit" }}>
+      {item.title}. <Voice item={item} delay={chance.integer({ min: 0, max: 1000 * 100 })} setPlaying={setPlaying} />
+    </a>
   );
+}
+
+function BackgroundMusic() {
+  const playBackgroundMusic = () => {
+    const backgroundMusic = new Howl({
+      src: ["t13.mp3"],
+      loop: true,
+      volume: 0.5,
+    });
+    backgroundMusic.play();
+  };
+  React.useEffect(() => playBackgroundMusic());
+  return null;
 }
 
 export default function Index({ pageContext }) {
@@ -40,11 +54,15 @@ export default function Index({ pageContext }) {
       </div>
     );
   }
+  const { results } = pageContext;
   return (
-    <p>
-      {pageContext.results.map((item, index) => (
-        <Sentence key={index} item={item} delay={index * 1000} />
-      ))}
-    </p>
+    <div>
+      <p>
+        {results.map((item, index) => (
+          <Text key={index} item={item} />
+        ))}
+      </p>
+      <BackgroundMusic />
+    </div>
   );
 }

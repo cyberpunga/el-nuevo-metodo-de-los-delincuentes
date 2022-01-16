@@ -1,6 +1,11 @@
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+}
 p {
   font-family: monospace;
-  font-size: 4em;
+  font-size: 8vw;
   text-align: justify;
   margin: 0px;
   word-break: break-all;
