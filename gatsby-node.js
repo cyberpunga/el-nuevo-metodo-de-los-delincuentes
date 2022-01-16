@@ -18,6 +18,6 @@ exports.createPages = async ({ actions }) => {
   createPage({
     path: "/",
     component: require.resolve(`./src/templates/index.js`),
-    context: { results: data },
+    context: { results },
   });
 };

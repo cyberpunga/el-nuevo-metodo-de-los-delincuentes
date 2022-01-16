@@ -1,7 +1,7 @@
-const versosDeGoogle = require("./src");
+const { getResults } = require("./src/utils");
 
 async function runLocally() {
-  const results = await versosDeGoogle({
+  const results = await getResults({
     q: "el nuevo método de los delincuentes",
     cr: "countryCL",
     num: 100,
