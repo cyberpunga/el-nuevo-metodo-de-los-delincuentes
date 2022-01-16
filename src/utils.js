@@ -1,5 +1,7 @@
-const { stringify } = require("querystring");
 const { JSDOM } = require("jsdom");
+const { stringify } = require("querystring");
+const fetch = require("node-fetch");
+const fs = require("fs");
 
 function cleanUp(text) {
   return text
@@ -14,7 +16,7 @@ function cleanUp(text) {
     .trim();
 }
 
-async function versosDeGoogle(params) {
+async function getResults(params) {
   const { window } = await JSDOM.fromURL(`https://www.google.com/search?${stringify(params)}`);
   const results = [...window.document.querySelectorAll("#main h3")].map((result) => {
     let url = new URL(result.closest("a")?.href);
@@ -26,4 +28,19 @@ async function versosDeGoogle(params) {
   return results;
 }
 
-module.exports = versosDeGoogle;
+async function downloadAudio(url, dest) {
+  const file = fs.createWriteStream(dest);
+  const response = await fetch(url);
+  response.body.pipe(file);
+  return new Promise((resolve, reject) => {
+    file.on("finish", () => {
+      file.close(resolve);
+    });
+    file.on("error", (err) => {
+      fs.unlink(dest);
+      reject(err);
+    });
+  });
+}
+
+module.exports = { getResults, downloadAudio };
