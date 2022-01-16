@@ -10,10 +10,10 @@ const chance = new Chance();
 function Vox({ item, setPlaying }) {
   const audio = new Howl({
     src: [`${slugify(item.title, { lower: true, strict: true })}.mp3`],
-    volume: chance.floating({ min: 0.4, max: 1, fixed: 2 }),
-    rate: chance.floating({ min: 0.8, max: 1.6, fixed: 2 }),
-    onplay: () => /* console.log(`${item.title} started`) */ setPlaying(true),
-    onend: () => /* console.log(`${item.title} ended`) */ setPlaying(false),
+    volume: chance.floating({ min: 0.6, max: 1, fixed: 2 }),
+    rate: chance.floating({ min: 0.8, max: 1.2, fixed: 2 }),
+    onplay: () => setPlaying(true),
+    onend: () => setPlaying(false),
   });
   const playVoice = () => setTimeout(() => audio.play(), item.delay);
   React.useEffect(() => playVoice(), []);
@@ -57,9 +57,7 @@ export default function Index({ pageContext }) {
     <div>
       <p>
         {results.map((item, index) => (
-          <React.Fragment key={index}>
-            <Text item={{ ...item, delay: (index + 1) * 2000 }} />
-          </React.Fragment>
+          <Text key={index} item={{ ...item, delay: (index + 1) * 2000 }} />
         ))}
       </p>
       <BackgroundMusic />
