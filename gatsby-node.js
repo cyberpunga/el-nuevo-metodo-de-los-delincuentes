@@ -4,19 +4,21 @@ const fs = require("fs");
 
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
-  const results = await getResults({
+  const searchResults = await getResults({
     q: "el nuevo método de los delincuentes",
     cr: "countryCL",
     num: 100,
   });
-  await Promise.all(
-    results.map(async (item) => {
-      const savePath = `./public/${slugify(item.title, { lower: true, strict: true })}.mp3`;
+  const results = await Promise.all(
+    searchResults.map(async (item) => {
+      const fileName = `${slugify(item.title, { lower: true, strict: true })}.mp3`;
+      const savePath = "./public/" + fileName;
       if (!fs.existsSync(savePath)) {
         const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
         await downloadAudio(url, savePath);
         console.log(`✅ ${item.title} saved successfully`);
       }
+      return { ...item, audio: "/" + fileName };
     })
   );
   createPage({
