@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ScrollControls, Scroll, useScroll, Text, /* PositionalAudio, */ OrbitControls } from "@react-three/drei";
+import { ScrollControls, Scroll, useScroll, Text, PositionalAudio } from "@react-three/drei";
 import React, { /* useEffect, useState, */ useRef, Suspense } from "react";
 import * as THREE from "three";
 
@@ -46,7 +46,7 @@ function Word({ children, ...props }) {
         {...fontProps}
         children={children}
       />
-      {/* <PositionalAudio autoplay position={props.position} url={props.audio} /> */}
+      <PositionalAudio autoplay loop position={props.position} url={props.audio} />
     </React.Fragment>
   );
 }
@@ -123,7 +123,6 @@ export default function Index({ pageContext }) {
           </Suspense>
         </Scroll>
       </ScrollControls>
-      <OrbitControls enableZoom={false} />
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <color attach="background" args={["#e71d36"]} />
