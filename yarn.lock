@@ -1050,6 +1050,26 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/lora@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@fontsource/lora/-/lora-4.5.3.tgz#fafa3f10c0ca5b0b8c9c294941cd5e6821eaa360"
+  integrity sha512-RkVIIaRvemXwptig0cmLjDs3h1FqO4uO4J3NOMmJQG346L/C0z2n8qkqdqaKx3GKrU1evarDwXgbfuTmeoKaJA==
+
+"@fontsource/merriweather@^4.5.4":
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/@fontsource/merriweather/-/merriweather-4.5.4.tgz#d3768028349d040e1e31d29b245d9dbc211824b0"
+  integrity sha512-nHGjhafMqDS9cO7EdPU46+T7TcwuJeAYlTZYlmHP1oId+sKcoWF+5JQDer2xA2n1Z5LWRdqz5lAs1OAzDe2qxQ==
+
+"@fontsource/montserrat@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-4.5.5.tgz#3408b8a20285a81b0743087bae5ed7aaa32c490c"
+  integrity sha512-JEFI803levuRx3D0Lry4WoM/Azrc3xpHlogi2022Y8ykaAenXvrjMym2BVU1W5QsuRIL86vrSUaxchO7Vk4CIw==
+
+"@fontsource/oswald@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@fontsource/oswald/-/oswald-4.5.3.tgz#3e2703ab39dc852b1bdc61834c2744601ebf75f9"
+  integrity sha512-fIg5+qVMkV2VQar537hO3+H2AAPMP5IFqtiejyiH/fFH7ZymqqpKaViyXiP4J4slcCJVblST7mIvP/EdcI43Yg==
+
 "@gatsbyjs/reach-router@^1.3.6":
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/@gatsbyjs/reach-router/-/reach-router-1.3.6.tgz#4e8225836959be247890b66f21a3198a0589e34d"
