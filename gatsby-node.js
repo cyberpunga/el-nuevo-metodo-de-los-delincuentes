@@ -18,7 +18,7 @@ exports.createPages = async ({ actions }) => {
         await downloadAudio(url, savePath);
         console.log(`✅ ${item.title} saved successfully`);
       }
-      return { ...item, audio: "/" + fileName };
+      return { ...item, audio: fileName };
     })
   );
   createPage({
