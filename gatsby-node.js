@@ -12,7 +12,7 @@ exports.createPages = async ({ actions }) => {
   const results = await Promise.all(
     searchResults.map(async (item) => {
       const fileName = `${slugify(item.title, { lower: true, strict: true })}.mp3`;
-      const savePath = "./public/" + fileName;
+      const savePath = "./static/" + fileName;
       if (!fs.existsSync(savePath)) {
         const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
         await downloadAudio(url, savePath);
