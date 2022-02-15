@@ -1,6 +1,34 @@
-const { getResults, downloadAudio } = require("./src/utils");
-const slugify = require("slugify");
+const { JSDOM } = require("jsdom");
+const fetch = require("node-fetch");
 const fs = require("fs");
+const slugify = require("slugify");
+
+async function getResults(params) {
+  const qs = new URLSearchParams(params);
+  const { window } = await JSDOM.fromURL(`https://www.google.cl/search?${qs}`);
+  const results = [...window.document.querySelectorAll("#main h3")].map((result) => {
+    let url = new URL(result.closest("a")?.href);
+    let href = new URLSearchParams(url.searchParams).get("q");
+    let title = result.textContent;
+    return { href, title };
+  });
+  return results;
+}
+
+async function downloadAudio(url, dest) {
+  const file = fs.createWriteStream(dest);
+  const response = await fetch(url);
+  response.body.pipe(file);
+  return new Promise((resolve, reject) => {
+    file.on("finish", () => {
+      file.close(resolve);
+    });
+    file.on("error", (err) => {
+      fs.unlink(dest);
+      reject(err);
+    });
+  });
+}
 
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
