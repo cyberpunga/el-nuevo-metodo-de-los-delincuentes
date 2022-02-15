@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 
 async function getResults(params) {
-  const { window } = await JSDOM.fromURL(`https://www.google.com/search?${stringify(params)}`);
+  const { window } = await JSDOM.fromURL(`https://www.google.cl/search?${stringify(params)}`);
   const results = [...window.document.querySelectorAll("#main h3")].map((result) => {
     let url = new URL(result.closest("a")?.href);
     let href = new URLSearchParams(url.searchParams).get("q");
