@@ -16,8 +16,8 @@ function Word({ children, ...props }) {
   const fontProps = { letterSpacing: -0.05, lineHeight: 1, "material-toneMapped": false };
   const sound = useRef();
   const ref = useIntersect(() => {
-    if (!sound.current.isPlaying) {
-      sound.current.play();
+    if (!sound.current?.isPlaying) {
+      sound.current?.play();
     }
   });
   return (
@@ -26,8 +26,17 @@ function Word({ children, ...props }) {
       <mesh ref={ref} position={props.position}>
         <planeBufferGeometry attach="geometry" args={[0, 0]} />
         <meshBasicMaterial attach="material" color="white" />
-        <PositionalAudio ref={sound} autoplay={false} loop={false} url={props.audio} detune={Math.random()} />
       </mesh>
+      <Suspense fallback={null}>
+        <PositionalAudio
+          ref={sound}
+          distance={2}
+          url={props.audio}
+          position={props.position}
+          autoplay={false}
+          loop={false}
+        />
+      </Suspense>
     </group>
   );
 }
@@ -47,11 +56,11 @@ function Content({ results }) {
         const randomProps = {
           position: [
             index === 0 ? 0 : THREE.MathUtils.randFloatSpread(8),
-            index === 0 ? 0 : -viewport.height * index * 0.5,
+            index === 0 ? 0 : -viewport.height * index * 0.25,
             index === 0 ? -4 : THREE.MathUtils.randFloatSpread(8),
           ],
           font: index === 0 ? fonts[0] : pickRandomElement(fonts),
-          fontSize: 1,
+          fontSize: THREE.MathUtils.randFloat(0.5, 1.5),
           maxWidth: index === 0 ? viewport.width : viewport.width * Math.random(),
         };
         return (
@@ -62,15 +71,14 @@ function Content({ results }) {
                 {...randomProps}
                 position={[
                   randomProps.position[0],
-                  randomProps.position[1] + viewport.height * results.length * 0.5,
+                  randomProps.position[1] + viewport.height * results.length * 0.25,
                   randomProps.position[2],
                 ]}
-                href={item.href}
               >
                 {item.title}
               </Word>
             ) : null}
-            <Word audio={item.audio} {...randomProps} href={item.href}>
+            <Word audio={item.audio} {...randomProps}>
               {item.title}
             </Word>
             {index < 8 ? (
@@ -79,10 +87,9 @@ function Content({ results }) {
                 {...randomProps}
                 position={[
                   randomProps.position[0],
-                  randomProps.position[1] - viewport.height * results.length * 0.5,
+                  randomProps.position[1] - viewport.height * results.length * 0.25,
                   randomProps.position[2],
                 ]}
-                href={item.href}
               >
                 {item.title}
               </Word>
@@ -99,13 +106,13 @@ export default function Index({ pageContext }) {
   return (
     <React.Fragment>
       <Canvas style={{ position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh" }}>
-        <ScrollControls infinite damping={4} pages={results.length / 2 + 1} distance={1.5}>
-          <Scroll>
-            <Suspense fallback={null}>
+        <Suspense fallback={null}>
+          <ScrollControls infinite damping={4} pages={results.length / 4 + 1} distance={1.5}>
+            <Scroll>
               <Content results={results} />
-            </Suspense>
-          </Scroll>
-        </ScrollControls>
+            </Scroll>
+          </ScrollControls>
+        </Suspense>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <color attach="background" args={["#e71d36"]} />

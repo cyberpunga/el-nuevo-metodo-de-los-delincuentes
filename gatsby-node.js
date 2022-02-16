@@ -37,18 +37,34 @@ exports.createPages = async ({ actions }) => {
     cr: "countryCL",
     num: 100,
   });
-  const results = await Promise.all(
-    searchResults.map(async (item) => {
-      const fileName = `${slugify(item.title, { lower: true, strict: true })}.mp3`;
-      const savePath = "./static/" + fileName;
-      if (!fs.existsSync(savePath)) {
-        const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
-        await downloadAudio(url, savePath);
-        console.log(`✅ ${item.title} saved successfully`);
-      }
-      return { ...item, audio: fileName };
-    })
-  );
+
+  // Download all the audio files sequentially
+  let results = [];
+  for (let item of searchResults) {
+    const fileName = `${slugify(item.title, { lower: true, strict: true })}.mp3`;
+    const savePath = "./static/" + fileName;
+    if (!fs.existsSync(savePath)) {
+      const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
+      await downloadAudio(url, savePath);
+      console.log(`✅ ${item.title} saved successfully`);
+    }
+    results.push({ ...item, audio: fileName });
+  }
+
+  // Download all the audio files in parallel
+  // const results = await Promise.all(
+  //   searchResults.map(async (item) => {
+  //     const fileName = `${slugify(item.title, { lower: true, strict: true })}.mp3`;
+  //     const savePath = "./static/" + fileName;
+  //     if (!fs.existsSync(savePath)) {
+  //       const url = `https://serverless-tts.vercel.app/api/demo?voice=es-LA_SofiaV3Voice&text=${item.title}`;
+  //       await downloadAudio(url, savePath);
+  //       console.log(`✅ ${item.title} saved successfully`);
+  //     }
+  //     return { ...item, audio: fileName };
+  //   })
+  // );
+
   createPage({
     path: "/",
     component: require.resolve(`./src/templates/index.js`),
