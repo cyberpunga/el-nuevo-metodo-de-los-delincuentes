@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkel_nuevo_metodo_de_los_delincuentes=self.webpackChunkel_nuevo_metodo_de_los_delincuentes||[]).push([[883],{9616:function(e,n,t){t.r(n),t.d(n,{default:function(){return o}});var l=t(7294),u=t(5444);function o(){return l.createElement("div",null,l.createElement("p",null,"no hay nada que ver aquí."),l.createElement(u.rU,{to:"/"},"volver al inicio."))}}}]);
+//# sourceMappingURL=component---src-pages-404-js-7f890695ef72ceb93874.js.map
